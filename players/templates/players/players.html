@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Football Players</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Football Players</h1>
+    <ul>
+        {% for player in players %}
+        <li>
+            {% if player.photo %}
+        <img src="{{  player.photo.url  }}" alt="{{  player.name  }}" width="="100>
+        {% endif %}
+        <strong>{{ player.name }}</strong>, Age: {{ player.age }}, Position: {{ player.position }}
+        <a href="{% url 'edit_player' player.pk %}">Edit</a>
+        </li>
+        {% empty %}
+        <li>No players found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_player' %}">Add</a>
+</body>
+</html>

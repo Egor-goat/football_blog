@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ team.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .team-header img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="team-header">
+        {% if team.logo %}
+            <img src="{{ team.logo.url }}" alt="{{ team.name }} logo">
+        {% endif %}
+        <h1>{{ team.name }} ({{ team.country }})</h1>
+    </div>
+
+    <p><strong>Founded:</strong> {{ team.founded }}</p>
+
+    <h2>Players</h2>
+    <ul>
+        {% for player in players %}
+        <li>{{ player.name }} — {{ player.position }} ({{ player.age }})</li>
+        {% empty %}
+        <li>No players in this team yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'team_list' %}">← Back to Teams</a>
+
+</body>
+</html>
