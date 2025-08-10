@@ -20,3 +20,23 @@ class Player(models.Model):
     clean_sheats = models.PositiveIntegerField(default=0)
     def __str__(self):
         return f"{self.name} ({self.position})"
+    
+class LeagueTable(models.Model):
+    team = models.OneToOneField(Team, on_delete=models.CASCADE)
+    played = models.PositiveIntegerField(default=0)
+    wins = models.PositiveIntegerField(default=0)
+    draws = models.PositiveIntegerField(default=0)
+    losses = models.PositiveIntegerField(default=0)
+    goals_for = models.PositiveIntegerField(default=0)
+    goals_against = models.PositiveIntegerField(default=0)
+
+    @property
+    def goal_difference(self):
+        return self.goals_for - self.goals_against
+    
+    @property
+    def points(self):
+        return self.wins * 3 + self.draws
+    
+    def __str__(self):
+        return f"{self.team.name} - {self.points} pts"

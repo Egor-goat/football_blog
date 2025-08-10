@@ -1,5 +1,6 @@
+from django.db.models import F, IntegerField, ExpressionWrapper
 from django.shortcuts import render
-from .models import Player, Team
+from .models import Player, Team, LeagueTable
 
 from .forms import PlayerForm
 from django.shortcuts import render, redirect
@@ -56,3 +57,12 @@ def team_detail(request, pk):
 
     return render(request, 'players/team_detail.html', {'team': team, 'players': players})
 
+def league_table_view(request):
+    points_expr = ExpressionWrapper(F("wins") * 3 + F("draws"), output_field=IntegerField())
+    table = (
+        LeagueTable.objects
+        .select_related("team")
+        .annotate(points=points_expr, gd=F("goals_for") - F("goals_against"))
+        .order_by("-points", "-gd", "goals_for", "team__name")
+    )
+    return render(request, "players/league_table.html", {"table": table})

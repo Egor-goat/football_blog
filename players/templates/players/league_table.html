@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>League Table</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    .table-wrap { margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    th { background: #007bff; color: #fff; position: sticky; top: 0; }
+    tr:hover { background: #f8fafc; }
+    .team-cell { display: flex; align-items: center; gap: 10px; }
+    .team-logo { width: 28px; height: 28px; object-fit: contain; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>League Table</h1>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>P</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th>GF</th>
+          <th>GA</th>
+          <th>GD</th>
+          <th>Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td class="team-cell">
+            {% if row.team.logo %}
+              <img src="{{ row.team.logo.url }}" alt="{{ row.team.name }} logo" class="team-logo">
+            {% endif %}
+            {{ row.team.name }}
+          </td>
+          <td>{{ row.played }}</td>
+          <td>{{ row.wins }}</td>
+          <td>{{ row.draws }}</td>
+          <td>{{ row.losses }}</td>
+          <td>{{ row.goals_for }}</td>
+          <td>{{ row.goals_against }}</td>
+          <td>{{ row.gd }}</td>
+          <td><strong>{{ row.points }}</strong></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="10">No data yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:16px;">
+    <a href="{% url 'team_list' %}">← Back to Teams</a>
+  </p>
+</body>
+</html>
